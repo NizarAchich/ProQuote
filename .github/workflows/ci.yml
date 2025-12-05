@@ -1,0 +1,35 @@
+name: CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore ProQuote.sln
+
+      - name: Build
+        run: dotnet build ProQuote.sln --no-restore --configuration Release
+
+      - name: Lint
+        run: dotnet format --verify-no-changes
+
+      - name: Test
+        run: dotnet test ProQuote.sln --no-build --collect:"XPlat Code Coverage"
+
+      - name: Publish coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: '**/TestResults/**/*'
