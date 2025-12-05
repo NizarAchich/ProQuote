@@ -25,7 +25,7 @@ jobs:
         run: dotnet format --verify-no-changes
 
       - name: Test
-        run: dotnet test ProQuote.sln --no-build --collect:"XPlat Code Coverage"
+        run: dotnet test ProQuote.sln --no-build --configuration Release --collect:"XPlat Code Coverage"
 
       - name: Publish coverage artifact
         if: always()

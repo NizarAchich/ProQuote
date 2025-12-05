@@ -14,8 +14,8 @@ if ! dotnet format --verify-no-changes; then
   exit 1
 fi
 
-echo "Running dotnet test..."
-if ! dotnet test ProQuote.sln --no-build; then
+echo "Running dotnet test (Release)..."
+if ! dotnet test ProQuote.sln --configuration Release; then
   echo ""
   echo "dotnet test failed. Please fix the failing tests before committing."
   exit 1
@@ -23,4 +23,3 @@ fi
 
 echo "Pre-commit checks (lint + tests) passed."
 exit 0
-
