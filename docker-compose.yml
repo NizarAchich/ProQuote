@@ -1,0 +1,35 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: src/ProQuote.Backend/Dockerfile
+    image: proquote/backend:latest
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - \"5000:8080\"
+    depends_on:
+      - database
+  front:
+    build:
+      context: .
+      dockerfile: src/ProQuote.Front/Dockerfile
+    image: proquote/front:latest
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Backend__BaseUrl: http://backend:8080
+    ports:
+      - \"5001:8081\"
+    depends_on:
+      - backend
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: \"Y\"
+      SA_PASSWORD: \"ChangeMeNow!123\"
+    ports:
+      - \"1433:1433\"
+    volumes:
+      - proquote-sql:/var/opt/mssql
+volumes:
+  proquote-sql:
