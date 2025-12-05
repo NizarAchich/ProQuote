@@ -8,4 +8,5 @@ TestResults/
 *.user
 *.suo
 *.userprefs
+.env
 
